@@ -25,11 +25,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://ceylon-software-hub-client.vercel.app/',
+  origin: [
+    'http://localhost:5173',
+    'https://ceylon-software-hub.vercel.app'
+  ],
   credentials: true
 }));
 
@@ -41,6 +45,11 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: 'Server is working successfully' });
+});
+
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -49,17 +58,9 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cuesai24:ceylonese@ceylonse.ie3kh2k.mongodb.net/?retryWrites=true&w=majority&appName=ceylonSE')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
-
-// Root route
-app.get('/', (req, res) => {
-  res.json({ message: 'Server is working successfully' });
-});
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -83,5 +84,6 @@ app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Export for Vercel serverless functions
-export default app;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
