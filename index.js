@@ -33,7 +33,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://ceylon-software-hub.vercel.app',
-    'https://ceylon-software-hub-client.vercel.app/'
+    'https://ceylon-software-hub-client.vercel.app'
   ],
   credentials: true
 }));
