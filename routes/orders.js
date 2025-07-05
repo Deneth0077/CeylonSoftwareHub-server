@@ -178,4 +178,21 @@ router.post('/:id/payment-slip', upload.single('paymentSlip'), async (req, res) 
   }
 });
 
+// Delete order (admin only)
+router.delete('/:id', authenticate, async (req, res) => {
+  try {
+    // Only allow admin
+    if (!req.user || req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+    const order = await Order.findByIdAndDelete(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.json({ message: 'Order deleted successfully', order });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
