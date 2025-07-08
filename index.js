@@ -31,13 +31,10 @@ const PORT = process.env.PORT || 5000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://ceylon-software-hub.vercel.app',
-    'https://ceylon-software-hub-client.vercel.app'
-  ],
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
+
 
 // Rate limiting
 const limiter = rateLimit({
