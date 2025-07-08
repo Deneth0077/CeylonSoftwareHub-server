@@ -16,8 +16,4 @@
       "dest": "index.js"
     }
   ],
-  "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "CLIENT_URL": "@client_url"
-  }
 }
