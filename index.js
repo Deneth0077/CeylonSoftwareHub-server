@@ -31,15 +31,21 @@ const PORT = process.env.PORT || 5000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: '*',
+  origin: [
+    'https://www.ceylonsoftware.lk',
+    'https://ceylonsoftware.lk', // Without www
+    'http://localhost:5173', // Development
+    'http://localhost:3000', // Development
+    /https:\/\/.*\.vercel\.app$/, // Vercel preview URLs
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true, // Support cookies/auth headers
 }));
-
 
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 100, // Limit each IP to 100 requests per windowMs
   message: 'Too many requests from this IP, please try again later.'
 });
 app.use('/api/', limiter);
@@ -54,7 +60,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cuesai24:ceylonese@ceylonse.ie3kh2k.mongodb.net/?retryWrites=true&w=majority&appName=ceylonSE')

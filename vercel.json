@@ -9,11 +9,12 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "index.js"
+      "dest": "/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "index.js"
+      "status": 404,
+      "dest": "/index.js"
     }
   ]
 }
