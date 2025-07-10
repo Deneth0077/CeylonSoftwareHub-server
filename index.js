@@ -32,11 +32,14 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 app.use(cors({
   origin: [
-    'https://www.ceylonsoftware.lk',
-    'https://ceylonsoftware.lk', // Without www
-    'http://localhost:5173', // Development
-    'http://localhost:3000', // Development
-    /https:\/\/.*\.vercel\.app$/, // Vercel preview URLs
+    'https://www.ceylonsoftware.lk',         // Your custom frontend domain
+    'https://ceylonsoftware.lk',             // Your custom frontend domain (no www)
+    'https://ceylon-software-hub-client.vercel.app', // Your specific Vercel-assigned frontend domain
+    'http://localhost:5173',                 // Client local dev
+    'http://localhost:3000'                  // Older client local dev port, can be removed if not used
+    // You might want to keep /https:\/\/.*\.vercel\.app$/ if you frequently use Vercel previews from many branches
+    // or remove it for a stricter production setup. For now, I'll keep it commented out for explicitness.
+    // /https:\/\/.*\.vercel\.app$/,
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true, // Support cookies/auth headers
